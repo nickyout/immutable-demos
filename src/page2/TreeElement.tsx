@@ -1,15 +1,16 @@
 import React, { CSSProperties } from 'react';
 import { TreeState, LeafState, NodeState } from './reducer/types';
+import { SideViewLines } from './SideViewLines';
 
 export const borderStyle = '1px solid gray';
 
-const grid2x2Style: CSSProperties = {
+const nodeGridStyle: CSSProperties = {
   display: "grid",
   gridTemplateColumns: `repeat(2, min-content)`,
   gridTemplateRows: `repeat(2, min-content)`
 };
 
-const defaultLeafStyle: CSSProperties = {
+const leafGridStyle: CSSProperties = {
   width: 4,
   height: 4,
   borderRight: borderStyle,
@@ -18,7 +19,25 @@ const defaultLeafStyle: CSSProperties = {
   // transition: `background-color 0.5s ease`
 };
 
+const nodeSideStyle: CSSProperties = {
+  display: "flex",
+  position: "relative",
+  flexDirection: "column",
+  alignItems: "end",
+  paddingLeft: 24,
+}
+
+const leafSideStyle: CSSProperties = {
+  width: 16,
+  height: 2,
+  borderRight: borderStyle,
+  borderLeft: borderStyle,
+  cursor: 'crosshair'
+  // transition: `background-color 0.5s ease`
+};
+
 type Props<T> = {
+  viewType: 'grid' | 'side';
   value: T;
   onLeafClick: (address: number[]) => void;
 };
@@ -37,13 +56,17 @@ export const TreeElement = React.memo(({ value, ...restProps }: Props<TreeState>
 /**
  * NodeElement is a component that renders its children in a grid of 2x2.
  */
-function NodeElement({ value, onLeafClick }: Props<NodeState>) {
+function NodeElement({ value, viewType, onLeafClick }: Props<NodeState>) {
   return (
-    <div style={grid2x2Style}>
+    <div style={viewType === 'grid' ? nodeGridStyle : nodeSideStyle}>
+      {viewType === 'side' && (
+        <SideViewLines highlightOnChange={value}/>
+      )}
       {value.children.map((child, index) => (
         <TreeElement
           key={index}
           value={child}
+          viewType={viewType}
           onLeafClick={onLeafClick}
         />
       ))}
@@ -54,7 +77,7 @@ function NodeElement({ value, onLeafClick }: Props<NodeState>) {
 /**
  * LeafElement is a component that renders a single 'pixel' with a color.
  */
-function LeafElement({ value, onLeafClick }: Props<LeafState>) {
+function LeafElement({ value, viewType, onLeafClick }: Props<LeafState>) {
   function onMouseEvent(event: React.MouseEvent) {
     // Triggers when mouse down
     if (event.buttons === 1) {
@@ -64,7 +87,7 @@ function LeafElement({ value, onLeafClick }: Props<LeafState>) {
   }
   return (
     <div
-      style={{ ...defaultLeafStyle, backgroundColor: value.color }}
+      style={{ ...viewType === 'grid' ? leafGridStyle : leafSideStyle, backgroundColor: value.color }}
       onMouseMove={onMouseEvent}
       onMouseDown={onMouseEvent}
     />

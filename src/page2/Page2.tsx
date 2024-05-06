@@ -19,6 +19,7 @@ const colorOptions = [
 
 export const Page2 = () => {
   const [color, setColor] = useState('#000000');
+  const [viewType, setViewType] = useState<'grid' | 'side'>('grid');
   const [state, dispatch] = useReducer(
     TreeReducer,
     undefined,
@@ -42,11 +43,15 @@ export const Page2 = () => {
             <option key={value} value={value}>{label}</option>
           ))}
         </select>
+        <select value={viewType} onChange={(event) => setViewType(event.target.value as 'grid' | 'side')}>
+          <option value="grid">Grid</option>
+          <option value="side">Side</option>
+        </select>
         <button onClick={() => dispatch(initializeAction)}>Clear</button>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <div style={{ borderTop: borderStyle, borderLeft: borderStyle }}>
-          <TreeElement value={state} onLeafClick={handleLeafClick}/>
+          <TreeElement viewType={viewType} value={state} onLeafClick={handleLeafClick}/>
         </div>
       </div>
     </div>
