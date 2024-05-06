@@ -17,7 +17,7 @@ const colorOptions = [
   { label: "Blue", value: "#0000ff" }
 ];
 
-export const Page2 = () => {
+const Page3 = () => {
   const [color, setColor] = useState('#000000');
   const [viewType, setViewType] = useState<'grid' | 'side'>('grid');
   const [state, dispatch] = useReducer(
@@ -56,5 +56,6 @@ export const Page2 = () => {
       </div>
     </div>
   );
-  
 };
+
+export default Page3;

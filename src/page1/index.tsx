@@ -1,5 +1,5 @@
-import { CSSProperties, useEffect, useState } from "react";
-import { PureTestDiv, TestDiv } from "./TestDiv";
+import { CSSProperties, memo, useEffect, useState } from "react";
+import { DivWithLogs } from "./DivWithLogs";
 import { log } from "../log";
 
 const pageStyle: CSSProperties = { display: 'flex', flexDirection: 'column', flex: 1, alignSelf: 'stretch' };
@@ -7,9 +7,14 @@ const formStyle: CSSProperties = { display: 'flex', flexDirection: 'column', pad
 const testDivContainerStyle: CSSProperties = { flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' };
 
 /**
+ * TestDiv, but memoized
+ */
+export const PureDivWithLogs = memo(DivWithLogs);
+
+/**
  * Component to illustrate what triggers a re-render
  */
-export const Page1 = () => {
+const Page1 = () => {
     const [color, setColor] = useState<CSSProperties['color']>('red');
     const [style, setStyle] = useState<CSSProperties>({ fontSize: '32px', color: 'red' });
 
@@ -18,10 +23,6 @@ export const Page1 = () => {
         //style.color = event.target.value;
     }
 
-    /**
-     * Creates a new style object every time the form is submitted
-     * Also triggered on Enter key
-     */
     function onFormSubmit(event: React.FormEvent<HTMLFormElement>) {
         setStyle({
             ...style,
@@ -44,13 +45,15 @@ export const Page1 = () => {
             </form>
             { /* test divs */ }
             <div style={testDivContainerStyle}>
-                <TestDiv id="test div" style={style}>
+                <DivWithLogs id="test div" style={style}>
                     Test div
-                </TestDiv>
-                <PureTestDiv id="pure test div" style={style}>
+                </DivWithLogs>
+                <PureDivWithLogs id="pure test div" style={style}>
                     Pure test div
-                </PureTestDiv>
+                </PureDivWithLogs>
             </div>
         </div>
     );
 };
+
+export default Page1;
