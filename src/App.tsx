@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { Page1 } from './page1/Page1';
+import { Page2 } from './page2/Page2';
+
+const pages = [
+  {
+    label: "Test component rendering", 
+    element: <Page1/>,
+  }, {
+    label: "page2",
+    element: <Page2/>
+  }
+];
 
 function App() {
+  const [pageIndex, setPageIndex] = useState(0);
+  const currentPage = pages[pageIndex];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ display: 'flex', flex: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'lightgray', padding: 8 }}>
+        {pages.map((page, index) => (
+          <button key={index} style={{ display: 'block', fontWeight: page === currentPage ? 'bold' : undefined, margin: 8 }} onClick={() => setPageIndex(index)}>
+            {page.label}
+          </button>
+        ))}
+      </div>
+      {pages.map((page, index) => (
+        <div key={index} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: page === currentPage ? 'flex' : 'none', overflow: 'auto' }}>
+          {page.element}
+        </div>
+      ))}
     </div>
   );
 }
