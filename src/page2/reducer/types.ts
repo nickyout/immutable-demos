@@ -3,7 +3,6 @@ export const INITIALIZE = "initialize";
 export type InitializeAction = {
     type: typeof INITIALIZE,
     depth: number;
-    size: number;
     color: string;
 };
 
@@ -16,3 +15,17 @@ export type ModifyColorAction = {
 }
 
 export type Action = InitializeAction | ModifyColorAction;
+
+export type NodeState = {
+    kind: "node",
+    address: number[];
+    children: TreeState[]
+};
+
+export type LeafState = {
+    kind: "leaf",
+    address: number[];
+    color: string;
+};
+
+export type TreeState = NodeState | LeafState

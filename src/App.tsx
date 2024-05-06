@@ -25,7 +25,7 @@ function App() {
         ))}
       </div>
       {pages.map((page, index) => (
-        <div key={index} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', display: page === currentPage ? 'flex' : 'none', overflow: 'auto' }}>
+        <div key={index} style={{ flex: 1, display: page === currentPage ? 'flex' : 'none', overflow: 'auto' }}>
           {page.element}
         </div>
       ))}

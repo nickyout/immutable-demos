@@ -1,50 +1,72 @@
-import React, { useMemo } from 'react';
-import { TreeState, LeafState, NodeState } from './reducer/State';
+import React, { CSSProperties } from 'react';
+import { TreeState, LeafState, NodeState } from './reducer/types';
 
-export const borderStyle = `1px solid gray`;
-export const highlightColor = "#000000";
+export const borderStyle = '1px solid gray';
+
+const grid2x2Style: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: `repeat(2, min-content)`,
+  gridTemplateRows: `repeat(2, min-content)`
+};
+
+const defaultLeafStyle: CSSProperties = {
+  width: 4,
+  height: 4,
+  borderRight: borderStyle,
+  borderBottom: borderStyle,
+  cursor: 'crosshair'
+  // transition: `background-color 0.5s ease`
+};
 
 type Props<T> = {
   value: T;
   onLeafClick: (address: number[]) => void;
 };
 
-export const TreeElement = React.memo(function InnerGridElement({ value, ...restProps }: Props<TreeState>) {
+/**
+ * TreeElement is a recursive component that renders a tree of nodes and leaves.
+ */
+export const TreeElement = React.memo(({ value, ...restProps }: Props<TreeState>) => {
   return value.kind === "node" ? (
     <NodeElement value={value} {...restProps} />
   ) : (
     <LeafElement value={value} {...restProps} />
   );
 });
-function NodeElement({ value, onLeafClick }: Props<NodeState>) {
-  const childCallbacks = useMemo(() => Array.from({ length: value.children.length })
-    .fill(undefined)
-    .map((_, index) => (address: number[]) => onLeafClick([index, ...address])), [value.children.length, onLeafClick]);
 
-  const style = useMemo(() => ({
-    display: "grid",
-    gridTemplateColumns: `repeat(${Math.sqrt(value.children.length)}, min-content)`,
-    gridTemplateRows: `repeat(${Math.sqrt(value.children.length)}, min-content)`
-  }), [value.children.length]);
+/**
+ * NodeElement is a component that renders its children in a grid of 2x2.
+ */
+function NodeElement({ value, onLeafClick }: Props<NodeState>) {
   return (
-    <div style={style}>
-      {value.children.map((childState, index) => (
+    <div style={grid2x2Style}>
+      {value.children.map((child, index) => (
         <TreeElement
           key={index}
-          value={childState}
-          onLeafClick={childCallbacks[index]} />
+          value={child}
+          onLeafClick={onLeafClick}
+        />
       ))}
     </div>
   );
 }
+
+/**
+ * LeafElement is a component that renders a single 'pixel' with a color.
+ */
 function LeafElement({ value, onLeafClick }: Props<LeafState>) {
+  function onMouseEvent(event: React.MouseEvent) {
+    // Triggers when mouse down
+    if (event.buttons === 1) {
+      onLeafClick(value.address);
+      event.preventDefault();
+    }
+  }
   return (
     <div
-      className={value.color === highlightColor ? "color" : undefined}
-      style={{ width: 4, height: 4, borderRight: borderStyle, borderBottom: borderStyle, transition: `background-color 0.5s ease` }}
-      onMouseMove={(event) => {
-        onLeafClick([]);
-        event.preventDefault();
-      }} />
+      style={{ ...defaultLeafStyle, backgroundColor: value.color }}
+      onMouseMove={onMouseEvent}
+      onMouseDown={onMouseEvent}
+    />
   );
 }
