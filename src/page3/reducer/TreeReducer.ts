@@ -8,28 +8,30 @@ export function TreeReducer(state: TreeState = { kind: "node", address: [], chil
             case INITIALIZE:
                 return initializeChildren(state, action);
             case MODIFY_COLOR:
+                // get the index of the child to modify
                 const index = action.address[state.address.length];
-                const nextChildren = [...state.children];
-                nextChildren[index] = TreeReducer(nextChildren[index], action);
-                return {
-                    ...state,
-                    children: nextChildren
-                };
-            default:
+                /** --------- Start of assignment --------- */
+
+                // modify the child
+                TreeReducer(state.children[index], action);
+                // return the modified state
+                return state;
+
+                /** --------- End of assignment --------- */
+                default:
                 return state;
         }
     } else {
        // Leaf 
         switch (action.type) {
             case MODIFY_COLOR:
-                if (state.color === action.color) {
-                    return state;
-                }
-                return {
-                    ...state,
-                    color: action.color
-                };
-            default:
+                /** --------- Start of assignment --------- */
+
+                state.color = action.color;
+                return state;
+
+                /** --------- End of assignment --------- */
+                default:
                 return state;
         }
     }

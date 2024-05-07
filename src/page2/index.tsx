@@ -19,9 +19,13 @@ const Page2 = () => {
     const toggleDone = useCallback((item: TodoItem) => {
         setTodoList((todoList) => {
             const index = todoList.indexOf(item);
+            /** --------- Start of assignment --------- */
+
             const newTodoList = [...todoList];
             newTodoList[index].done = !newTodoList[index].done;
             return newTodoList;
+
+            /** --------- End of assignment --------- */
         });
     }, []);
 
