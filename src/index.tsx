@@ -3,13 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { legacy_createStore as createStore} from 'redux'
+import { TreeReducer } from './page3/reducer/TreeReducer';
+import { initializeAction } from './page3';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const store = createStore(
+  TreeReducer,
+  TreeReducer(undefined, initializeAction),
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

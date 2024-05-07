@@ -1,9 +1,9 @@
-import { useCallback, useReducer, useState } from "react";
-import { TreeReducer } from "./reducer/TreeReducer";
-import { INITIALIZE, InitializeAction, MODIFY_COLOR } from "./reducer/types";
+import { useCallback, useState } from "react";
+import { Action, INITIALIZE, InitializeAction, MODIFY_COLOR, TreeState } from "./reducer/types";
 import { TreeElement, borderStyle } from "./TreeElement";
+import { ConnectedProps, connect } from "react-redux";
 
-const initializeAction: InitializeAction = {
+export const initializeAction: InitializeAction = {
   type: INITIALIZE,
   color: '#ffffff',
   depth: 7
@@ -17,14 +17,9 @@ const colorOptions = [
   { label: "Blue", value: "#0000ff" }
 ];
 
-const Page3 = () => {
+const Page3 = ({ state, dispatch }: ConnectedProps<typeof connector>) => {
   const [color, setColor] = useState('#000000');
   const [viewType, setViewType] = useState<'grid' | 'side'>('grid');
-  const [state, dispatch] = useReducer(
-    TreeReducer,
-    undefined,
-    (initialState) => TreeReducer(initialState, initializeAction)
-  );
   /**
    * Apply the color to the leaf node in the state at the given address.
    */
@@ -34,7 +29,7 @@ const Page3 = () => {
       address: address,
       color: color
     });
-  }, [color]);
+  }, [dispatch, color]);
   return (
     <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: 'auto' }}>
       <div style={{ padding: 8, display: 'flex' }}>
@@ -58,4 +53,13 @@ const Page3 = () => {
   );
 };
 
-export default Page3;
+const connector = connect(
+  (state: TreeState) => ({
+    state
+  }),
+  (dispatch) => ({
+    dispatch: (action: Action) => dispatch(action),
+  })
+);
+
+export default connector(Page3);
