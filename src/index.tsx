@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore} from 'redux'
-import { TreeReducer } from './page3/reducer/TreeReducer';
-import { initializeAction } from './page3';
+import { TreeReducer } from './demo3/reducer/TreeReducer';
+import { initializeAction } from './demo3';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
