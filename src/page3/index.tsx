@@ -20,6 +20,7 @@ const colorOptions = [
 const Page3 = ({ state, dispatch }: ConnectedProps<typeof connector>) => {
   const [color, setColor] = useState('#000000');
   const [viewType, setViewType] = useState<'grid' | 'side'>('grid');
+
   /**
    * Apply the color to the leaf node in the state at the given address.
    */
@@ -31,6 +32,9 @@ const Page3 = ({ state, dispatch }: ConnectedProps<typeof connector>) => {
     });
   }, [dispatch, color]);
 
+  /**
+   * Reset the state to the initial state.
+   */
   const handleClearClick = useCallback(() => {
     dispatch(initializeAction);
   }, [dispatch]);
