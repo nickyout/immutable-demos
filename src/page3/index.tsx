@@ -30,6 +30,11 @@ const Page3 = ({ state, dispatch }: ConnectedProps<typeof connector>) => {
       color: color
     });
   }, [dispatch, color]);
+
+  const handleClearClick = useCallback(() => {
+    dispatch(initializeAction);
+  }, [dispatch]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: 'auto' }}>
       <div style={{ padding: 8, display: 'flex' }}>
@@ -42,10 +47,10 @@ const Page3 = ({ state, dispatch }: ConnectedProps<typeof connector>) => {
           <option value="grid">Grid</option>
           <option value="side">Side</option>
         </select>
-        <button onClick={() => dispatch(initializeAction)}>Clear</button>
+        <button onClick={handleClearClick}>Clear</button>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <div style={{ borderTop: borderStyle, borderLeft: borderStyle }}>
+        <div style={{ borderTop: viewType === 'grid' ? borderStyle : undefined, borderLeft: viewType === 'grid' ? borderStyle : undefined }}>
           <TreeElement viewType={viewType} value={state} onLeafClick={handleLeafClick}/>
         </div>
       </div>

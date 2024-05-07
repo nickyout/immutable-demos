@@ -1,3 +1,5 @@
+// Action types and constants
+
 export const INITIALIZE = "initialize";
 
 export type InitializeAction = {
@@ -15,6 +17,8 @@ export type ModifyColorAction = {
 }
 
 export type Action = InitializeAction | ModifyColorAction;
+
+// Tree state types
 
 export type NodeState = {
     kind: "node",

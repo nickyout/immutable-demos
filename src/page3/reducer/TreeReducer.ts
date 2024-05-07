@@ -22,6 +22,9 @@ export function TreeReducer(state: TreeState = { kind: "node", address: [], chil
        // Leaf 
         switch (action.type) {
             case MODIFY_COLOR:
+                if (state.color === action.color) {
+                    return state;
+                }
                 return {
                     ...state,
                     color: action.color
