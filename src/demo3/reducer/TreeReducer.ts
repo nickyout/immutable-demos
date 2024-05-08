@@ -18,7 +18,7 @@ export function TreeReducer(state: TreeState = { kind: "node", address: [], chil
                 return state;
 
                 /** --------- End of assignment --------- */
-                default:
+            default:
                 return state;
         }
     } else {
@@ -31,7 +31,7 @@ export function TreeReducer(state: TreeState = { kind: "node", address: [], chil
                 return state;
 
                 /** --------- End of assignment --------- */
-                default:
+            default:
                 return state;
         }
     }
