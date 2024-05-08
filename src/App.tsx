@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import Page1 from './demo1';
-import Page2 from './demo2';
-import Page3 from './demo3';
+import Demo1 from './demo1';
+import Demo2 from './demo2';
+import Demo3 from './demo3';
 
 const pages = [
   {
-    label: "Test component rendering", 
-    element: <Page1/>,
+    label: "1: Test component rendering", 
+    element: <Demo1/>,
   }, {
-    label: "Todo list",
-    element: <Page2/>
+    label: "2: Todo list",
+    element: <Demo2/>
   },
   {
-    label: "State drawing component",
-    element: <Page3/>
+    label: "3: State drawing component",
+    element: <Demo3/>
   }
 ];
 
@@ -22,7 +22,7 @@ function App() {
   const currentPage = pages[pageIndex];
   return (
     <div style={{ display: 'flex', flex: 1 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'lightgray', padding: 8, minWidth: 220 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'lightgray', padding: 8, minWidth: 240 }}>
         {pages.map((page, index) => (
           <button key={index} style={{ display: 'block', fontWeight: page === currentPage ? 'bold' : undefined, margin: 8 }} onClick={() => setPageIndex(index)}>
             {page.label}

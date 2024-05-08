@@ -45,11 +45,11 @@ const Page1 = () => {
             </form>
             { /* test divs */ }
             <div style={testDivContainerStyle}>
-                <DivWithLogs id="test div" style={style}>
-                    Test div
+                <DivWithLogs id="div" style={style}>
+                    div
                 </DivWithLogs>
-                <PureDivWithLogs id="pure test div" style={style}>
-                    Pure test div
+                <PureDivWithLogs id="memo div" style={style}>
+                    memo div
                 </PureDivWithLogs>
             </div>
         </div>
